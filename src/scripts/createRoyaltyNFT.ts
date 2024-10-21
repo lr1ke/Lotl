@@ -1,7 +1,7 @@
 
 import { generateSigner, publicKey, now, dateTime, formatDateTime } from '@metaplex-foundation/umi'
 import { base58 } from '@metaplex-foundation/umi/serializers';
-import { create, ruleSet, fetchAsset} from '@metaplex-foundation/mpl-core'
+import { create, ruleSet, fetchCollection, fetchAsset, createCollection} from '@metaplex-foundation/mpl-core'
 import { createUmi } from '@metaplex-foundation/umi-bundle-defaults';
 import { walletAdapterIdentity } from '@metaplex-foundation/umi-signer-wallet-adapters';
 
@@ -9,7 +9,13 @@ import { walletAdapterIdentity } from '@metaplex-foundation/umi-signer-wallet-ad
 
     const umi = createUmi('https://api.devnet.solana.com')
     umi.use(walletAdapterIdentity(wallet));
-    const collectionPublicKey =  publicKey("HjB7oVk1Bvog9UVN6sPW6CTWMXMW2qE6cxSZ8GU8pf1w");
+
+    let walletPublicKey = wallet.publicKey;
+
+    const lotlCollectionPublicKey =  publicKey("HjB7oVk1Bvog9UVN6sPW6CTWMXMW2qE6cxSZ8GU8pf1w");
+
+
+
 
     //set datetime
     let datum = formatDateTime(now());
@@ -28,11 +34,11 @@ import { walletAdapterIdentity } from '@metaplex-foundation/umi-signer-wallet-ad
                 basisPoints: 2000,
                 creators: [
                         {
-                            address: asset.publicKey,
+                            address: walletPublicKey,
                             percentage: 80,
                         },
                         {
-                            address: collectionPublicKey,
+                            address: lotlCollectionPublicKey ,
                             percentage: 20,
                         }
                     ],
