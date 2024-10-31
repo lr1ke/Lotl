@@ -11,7 +11,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import Image from 'next/image';
 import { any } from 'prop-types';
 import { ConnectWallet } from "@/components/ui/ConnectWallet";
-import { faQuestionCircle, faLink } from '@fortawesome/free-solid-svg-icons';
+import { faQuestionCircle, faLink, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
@@ -182,20 +182,20 @@ const Loti = () => {
                         </div>
 
                         {selectedImage && (
-                            <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
-                                <div className='relative'>
-                                    <img
-                                        src={selectedImage}
-                                        alt="Zoomed NFT"
-                                        className='max-w-full max-h-full'
-                                    />
-                                    <button
-                                        onClick={closeModal}
-                                        className='absolute top-2 right-2 bg-white text-black rounded-full p-1 hover:bg-gray-300'
-                                    >
-                                        Close
-                                    </button>
-                                </div>
+                            <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50'>
+                            <div className='relative bg-white p-4 rounded-lg shadow-lg max-w-lg max-h-[80vh] overflow-auto'>
+                                <button
+                                onClick={closeModal}
+                                className='absolute top-2 right-2 bg-white text-black rounded-full p-1 hover:bg-gray-300'
+                                >
+                                <FontAwesomeIcon icon={faTimes} className="h-6 w-6" />
+                                </button>
+                                <img
+                                src={selectedImage}
+                                alt="Zoomed NFT"
+                                className='max-w-full max-h-[70vh] object-contain' // Limits the image size and maintains aspect ratio
+                                />
+                            </div>
                             </div>
                         )}
 

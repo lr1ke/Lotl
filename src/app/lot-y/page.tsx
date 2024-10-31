@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react';
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { createUmi } from '@metaplex-foundation/umi-bundle-defaults';
 import { walletAdapterIdentity } from '@metaplex-foundation/umi-signer-wallet-adapters';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -9,7 +9,7 @@ import { any } from 'prop-types';
 import { publicKey } from '@metaplex-foundation/umi';
 import { ConnectWallet } from "@/components/ui/ConnectWallet";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestionCircle, faHome, faLink } from '@fortawesome/free-solid-svg-icons';
+import { faQuestionCircle, faHome, faLink, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { das } from '@metaplex-foundation/mpl-core-das';
 import { dasApi } from '@metaplex-foundation/digital-asset-standard-api';
 
@@ -27,13 +27,12 @@ const Loty = () => {
     .use(walletAdapterIdentity(wallet))
     .use(dasApi());
 
-  const handleFetchTradeableClick = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const fetchTradeableAssets = async () => {
 
-    if (!wallet || !wallet.publicKey) {
-      console.error('Wallet not connected or public key unavailable');
-      return;
-    }
+    // if (!wallet || !wallet.publicKey) {
+    //   console.error('Wallet not connected or public key unavailable');
+    //   return;
+    // }
 
     try {
       // Fetch all tradeable assets
@@ -53,6 +52,10 @@ const Loty = () => {
     }
   };
 
+  useEffect(() => {
+  fetchTradeableAssets();
+}, [umi]);
+
   const closeModal = () => {
     setSelectedImage(null);
   };
@@ -64,14 +67,14 @@ const Loty = () => {
           <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
             <h1 className="text-2xl font-semibold mb-4 opacity-50 text-center">Lot-y</h1>
             <h2 className="text-xl font-semibold mb-4 text-center opacity-80">Sanctuary for All</h2>
-            <ConnectWallet />
+            {/* <ConnectWallet />
             <button
-              onClick={handleFetchTradeableClick}
+              onClick={fetchTradeableAssets}
               className='flex-1 bg-gradient-to-r from-pink-300 to-yellow-200 hover:from-green-300 hover:to-blue-300 text-blue-800 p-2 transition-all duration-200 border-2 border-transparent hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed'
-              disabled={!wallet || !wallet.publicKey}
+              // disabled={!wallet || !wallet.publicKey}
             >
               Show all tradeable Lotl NFTs
-            </button>
+            </button> */}
             <div className="p-4">
               <div className='mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4'>
                 {tradeableAll.length > 0 ? (
@@ -120,22 +123,24 @@ const Loty = () => {
                 )}
               </div>
               {selectedImage && (
-                <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50'>
-                  <div className='relative'>
-                    <img
-                      src={selectedImage}
-                      alt="Zoomed NFT"
-                      className='max-w-full max-h-full'
-                    />
+                <div className='fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50'>
+                  <div className='relative bg-white p-4 rounded-lg shadow-lg max-w-lg max-h-[80vh] overflow-auto'>
                     <button
                       onClick={closeModal}
                       className='absolute top-2 right-2 bg-white text-black rounded-full p-1 hover:bg-gray-300'
                     >
-                      Close
+                      <FontAwesomeIcon icon={faTimes} className="h-6 w-6" />
                     </button>
+                    <img
+                      src={selectedImage}
+                      alt="Zoomed NFT"
+                      className='max-w-full max-h-[70vh] object-contain' // Limits the image size and maintains aspect ratio
+                    />
                   </div>
                 </div>
               )}
+
+
             </div>
           </div>
         </div>
